@@ -1,5 +1,12 @@
-<h1 class="text-3xl font-bold underline text-red-500">Hello world!</h1>
-<mat-form-field appearance="outline">
-  <mat-label>Material</mat-label>
-  <input matInput placeholder="Material" />
-</mat-form-field>
+<main class="flex flex-col h-screen">
+  <app-navbar></app-navbar>
+  <section class="flex-grow">
+    <h1 class="text-3xl font-bold text-red-500 underline">Hello world!</h1>
+    <mat-form-field appearance="outline">
+      <mat-label>Material</mat-label>
+      <input matInput placeholder="Material" />
+    </mat-form-field>
+  </section>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+</main>
