@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService, User } from '@auth0/auth0-angular';
 import { BehaviorSubject, EMPTY, Observable, switchMap } from 'rxjs';
 import { LoaderService } from './loader.service';
+import { ToastrNotification } from '../utilities/notifications';
 
 @Injectable({ providedIn: 'root' })
 export class AuthLocalService {
@@ -11,8 +12,9 @@ export class AuthLocalService {
     private readonly authSvc: AuthService,
     private readonly loaderSvc: LoaderService
   ) {
-    this.setObservableisAuthenticated();
     this.setObservableIsLoading();
+    this.setObservableisAuthenticated();
+    this.setObservableIsError();
   }
 
   public getUser$(): Observable<User | null> {
@@ -20,10 +22,12 @@ export class AuthLocalService {
   }
 
   public login(): void {
+    this.loaderSvc.showLoader(true);
     this.authSvc.loginWithRedirect();
   }
 
   public logout(): void {
+    this.loaderSvc.showLoader(true);
     this.user$.next(null);
     this.authSvc.logout();
   }
@@ -50,6 +54,13 @@ export class AuthLocalService {
         return;
       }
       this.loaderSvc.showLoader(false);
+    });
+  }
+
+  private setObservableIsError(): void {
+    this.authSvc.error$.subscribe((error) => {
+      if (error && error.message)
+        ToastrNotification.showError({ message: error.message });
     });
   }
 }
