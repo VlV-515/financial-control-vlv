@@ -7,12 +7,31 @@
       <a href="#" class="mr-4">Home</a>
       <a href="#" class="mr-4">About</a>
     </div>
-    <div>
+    <div *ngIf="!(user$ | async); else userLoginbtn">
       <button
         class="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600"
+        (click)="authLocalSvc.login()"
       >
         Sign in / Sign up
       </button>
     </div>
   </div>
 </header>
+
+<ng-template #userLoginbtn>
+  <div class="flex items-center justify-end">
+    <img
+      alt="User Profile"
+      class="w-8 h-8 mr-4 rounded-full"
+      [src]="(authLocalSvc.getUser$() | async)?.picture"
+      [matTooltip]="(user$ | async)?.name"
+    />
+    <!-- Logout Button -->
+    <button
+      (click)="authLocalSvc.logout()"
+      class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+    >
+      Logout
+    </button>
+  </div>
+</ng-template>
