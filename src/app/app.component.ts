@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, AfterViewInit } from '@angular/core';
 import { LoaderService } from './shared/services/loader.service';
 
 @Component({
@@ -6,6 +6,12 @@ import { LoaderService } from './shared/services/loader.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  constructor(public LoaderSvc: LoaderService){}
+export class AppComponent implements AfterViewInit {
+  constructor(
+    public LoaderSvc: LoaderService,
+    private readonly detectorRef: ChangeDetectorRef
+  ) {}
+  ngAfterViewInit(): void {
+    this.detectorRef.detectChanges();
+  }
 }
